@@ -1,12 +1,11 @@
 from pprint import pprint
-
 import math
 import datetime
 import time
-#import praw
+import praw
 import os
 
-score = {"score": 0, "created": 0, "created_utc": 0, "num_comments": 0, "over_18": 0}
+#score = {"score": 0, "created": 0, "created_utc": 0, "num_comments": 0, "over_18": 0}
 
 def norm(post):
     sum_of_squares = 0
@@ -16,16 +15,16 @@ def norm(post):
 
     return math.sqrt(sum_of_squares)
 
-def build_semantic_descriptors(sentences):
+def build_semantic_descriptors(posts):
     semantic_descriptors = {}
     word_count = 0;
 
-    for sentence in sentences:
-        sorted_sentence = list(set(sentence))
-        for word in sorted_sentence:
+    for post in posts:
+        sorted_words = list(set(post))
+        for word in sorted_words:
             if not word in semantic_descriptors:
                 semantic_descriptors[word] = {}
-            for iterate in sorted_sentence:
+            for iterate in sorted_words:
                 if not iterate == word:
                     if not iterate in semantic_descriptors[word]:
                         semantic_descriptors[word][iterate] = 1
@@ -34,14 +33,10 @@ def build_semantic_descriptors(sentences):
 
     return semantic_descriptors
 
-def prepare_semantic_descriptors(submissions):
-    build_sentences = []
+def prepare_semantic_descriptors(text):
+    build_posts = []
 
-    for posts in submissions:
-        file = open("RedditTitles.txt")
-        text = file.read()
-
-        text = text.replace("!", ".")
+    text = text.replace("!", ".")  \
                    .replace("?", ".")  \
                    .replace(",", " ")  \
                    .replace("-", " ")  \
@@ -53,25 +48,27 @@ def prepare_semantic_descriptors(submissions):
                    .replace("\n", " ") \
                    .lower()
 
-        sentences = text.split(".")
+    posts = text.split("|")
 
-    for sentence in sentences:
-        words = sentence.split()
-        build_sentences.append(words)
+    for post in posts:
+        words = post.split()
+        build_posts.append(words)
 
-    return build_semantic_descriptors(build_sentences)
+    return build_semantic_descriptors(build_posts)
 
 def parse_post(id, author, name, permalink, title, url, score):
     print(id)
 
 if __name__ == "__main__":
-    os.chdir("/Users/mreiter/Documents")
+    r = praw.Reddit("unorginaility test")
+    submissions = r.get_subreddit("all").get_hot(limit=1)
+    report_candidates = r.get_subreddit("nsfw").get_hot(limit=1)
 
+    titles = ""
 
-    # r = praw.Reddit("unorginaility test")
-    # submissions = r.get_subreddit("all").get_hot(limit=1000)
+    for submission in submissions:
+        titles += submission.title.encode("ascii", "ignore") + "|"
 
-    # for s in submissions:
-    #     score = {"score": s.score, "num_comments": s.num_comments}
-    #
-    #     print(s.title.encode("ascii","ignore"))
+    test = prepare_semantic_descriptors(titles)
+
+    print(test)
