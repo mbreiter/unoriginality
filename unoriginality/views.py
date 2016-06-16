@@ -1,11 +1,39 @@
-from pprint import pprint
-import math
-import datetime
-import time
+from django.shortcuts import render
+from django.http import HttpResponse
 import praw
-import os
+import math
 
-#score = {"score": 0, "created": 0, "created_utc": 0, "num_comments": 0, "over_18": 0}
+def search(request):
+    #sorted(d, key=d.get, reverse=True):
+    message = request.GET['subreddit']
+    return HttpResponse(message)
+
+
+def index(request):
+    global r, top_submissions
+
+    r = praw.Reddit("unorginaility development -- v1.00")
+    top_submissions = r.get_subreddit("all").get_hot(limit=100)
+
+    repost_candidates = r.get_subreddit("funny").get_rising(limit=100)
+
+    reference_titles = ""
+    repost_titles = ""
+
+    for submission in top_submissions:
+        reference_titles += submission.title.encode("ascii", "ignore") + "|"
+
+    reference = prepare_semantic_descriptors(reference_titles)
+    #
+    # for submission in repost_candidates:
+    #     repost_title = submission.title.encode("ascii", "ignore") + "|"
+    #     candidate = prepare_semantic_descriptors(repost_title)
+    #
+    #     score = similarity_score(candidate, reference)
+    #
+    return render(request, 'unoriginality/home.html')
+
+    #return HttpResponse(reference_titles)
 
 def norm(post):
     sum_of_squares = 0
@@ -84,23 +112,3 @@ def prepare_semantic_descriptors(text):
 
 def parse_post(id, author, name, permalink, title, url, score):
     print(id)
-
-if __name__ == "__main__":
-    r = praw.Reddit("unorginaility test")
-    top_submissions = r.get_subreddit("all").get_hot(limit=100)
-    repost_candidates = r.get_subreddit("funny").get_rising(limit=100)
-
-    reference_titles = ""
-    repost_titles = ""
-
-    for submission in top_submissions:
-        reference_titles += submission.title.encode("ascii", "ignore") + "|"
-
-    reference = prepare_semantic_descriptors(reference_titles)
-
-    for submission in repost_candidates:
-        repost_title = submission.title.encode("ascii", "ignore") + "|"
-        candidate = prepare_semantic_descriptors(repost_title)
-
-        score = similarity_score(candidate, reference)
-        print("%s, %s, %f") % (repost_title, submission.url, score)
