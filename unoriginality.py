@@ -88,11 +88,10 @@ def parse_post(id, author, name, permalink, title, url, score):
 if __name__ == "__main__":
     r = praw.Reddit("unorginaility test")
     top_submissions = r.get_subreddit("all").get_hot(limit=100)
-    repost_candidates = r.get_subreddit("funny").get_hot(limit=1)
+    repost_candidates = r.get_subreddit("funny").get_rising(limit=100)
 
     reference_titles = ""
     repost_titles = ""
-
 
     for submission in top_submissions:
         reference_titles += submission.title.encode("ascii", "ignore") + "|"
@@ -100,8 +99,8 @@ if __name__ == "__main__":
     reference = prepare_semantic_descriptors(reference_titles)
 
     for submission in repost_candidates:
-        repost_titles = submission.title.encode("ascii", "ignore") + "|"
-        candidate = prepare_semantic_descriptors(repost_titles)
+        repost_title = submission.title.encode("ascii", "ignore") + "|"
+        candidate = prepare_semantic_descriptors(repost_title)
 
         score = similarity_score(candidate, reference)
-        print(score)
+        print("%s, %s, %f") % (repost_title, submission.url, score)
