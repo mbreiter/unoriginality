@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title> Unoriginality </title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="" />
+    <meta name="author" content="Matthew Reiter" />
+
+    {% load staticfiles %}
+    <!-- Normalize -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <!-- Owl -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/owl.css' %}">
+    <!-- Animate.css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.1.0/css/font-awesome.min.css' %}">
+    <!-- Elegant Icons -->
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/eleganticons/et-icons.css' %}">
+    <!-- Main style -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cardio.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row text-center title">
+            <h1>Unoriginality</h2>
+            <h4 class="light muted">a reddit repost engine</h4>
+            <hr>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <script src="{% static 'js/typewriter.js' %}"></script>
+    <script src="{% static 'js/jquery.onepagenav.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

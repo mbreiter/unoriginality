@@ -4,33 +4,38 @@ import praw
 import math
 
 def search(request):
-    #sorted(d, key=d.get, reverse=True):
-    message = request.GET['subreddit']
-    return HttpResponse(message)
+    global r, reference
 
+    print('test')
+
+    subreddit = request.GET['subreddit']
+    reposts = r.get_subreddit(subreddit).get_rising(limit=1000)
+
+    repost_candidates = {}
+
+    for submission in reposts:
+        reposts = submission.title.encode("ascii", "ignore") + "|"
+        repost_descriptor = prepare_semantic_descriptors(reposts)
+
+        score = similarity_score(repost_descriptor, reference)
+        repost_candidates[submission] = score
+
+    return render(request, 'unoriginality/search.html', {'repost_candidates' : repost_candidates})
 
 def index(request):
-    global r, top_submissions
+    global r, reference
+
+    print('tes2t')
 
     r = praw.Reddit("unorginaility development -- v1.00")
     top_submissions = r.get_subreddit("all").get_hot(limit=100)
-
-    repost_candidates = r.get_subreddit("funny").get_rising(limit=100)
-
     reference_titles = ""
-    repost_titles = ""
 
     for submission in top_submissions:
         reference_titles += submission.title.encode("ascii", "ignore") + "|"
 
     reference = prepare_semantic_descriptors(reference_titles)
-    #
-    # for submission in repost_candidates:
-    #     repost_title = submission.title.encode("ascii", "ignore") + "|"
-    #     candidate = prepare_semantic_descriptors(repost_title)
-    #
-    #     score = similarity_score(candidate, reference)
-    #
+
     return render(request, 'unoriginality/home.html')
 
     #return HttpResponse(reference_titles)
