@@ -1,15 +1,18 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
+from datetime import datetime, timedelta
 import praw
 import math
 
 def search(request):
-    global r, reference
+    r = praw.Reddit("unorginaility development -- candidates -- v1.01")
+    subreddit = request.GET["subreddit"]
 
-    print('test')
-
-    subreddit = request.GET['subreddit']
-    reposts = r.get_subreddit(subreddit).get_rising(limit=1000)
+    try:
+        reposts = r.get_subreddit(subreddit, fetch = True).get_rising(limit=1000)
+    except:
+        return HttpResponse("bruh")
 
     repost_candidates = {}
 
@@ -17,28 +20,41 @@ def search(request):
         reposts = submission.title.encode("ascii", "ignore") + "|"
         repost_descriptor = prepare_semantic_descriptors(reposts)
 
-        score = similarity_score(repost_descriptor, reference)
+        score = similarity_score(repost_descriptor, request.session["reference"])
         repost_candidates[submission] = score
 
-    return render(request, 'unoriginality/search.html', {'repost_candidates' : repost_candidates})
+    return render(request, "unoriginality/search.html", {"repost_candidates" : repost_candidates})
 
 def index(request):
-    global r, reference
+    r = praw.Reddit("unorginaility development -- top -- v1.01")
 
-    print('tes2t')
+    if request.session.get("last_visit"):
+        last_visit_time = request.session.get("last_visit")
+        visits = request.session.get("visits", 0)
 
-    r = praw.Reddit("unorginaility development -- v1.00")
-    top_submissions = r.get_subreddit("all").get_hot(limit=100)
-    reference_titles = ""
+        if (datetime.now() - datetime.strptime(last_visit_time[:-7], "%Y-%m-%d %H:%M:%S")) > timedelta( 0, 10 * 60, 0):
+            del request.session["reference"]
 
-    for submission in top_submissions:
-        reference_titles += submission.title.encode("ascii", "ignore") + "|"
+            request.session["visits"] = visits + 1
+            request.session["last_visit"] = str(datetime.now())
+    else:
+        request.session["last_visit"] = str(datetime.now())
+        request.session["visits"] = 1
 
-    reference = prepare_semantic_descriptors(reference_titles)
+    if request.session.get("reference"):
+        print("NOT LOADING")
+        return render(request, "unoriginality/home.html")
+    else:
+        top_submissions = r.get_subreddit("all").get_hot(limit=100)
+        reference_titles = ""
 
-    return render(request, 'unoriginality/home.html')
+        for submission in top_submissions:
+            reference_titles += submission.title.encode("ascii", "ignore") + "|"
 
-    #return HttpResponse(reference_titles)
+        reference = prepare_semantic_descriptors(reference_titles)
+        request.session["reference"] = reference
+
+        return render(request, "unoriginality/home.html")
 
 def norm(post):
     sum_of_squares = 0
@@ -99,8 +115,8 @@ def prepare_semantic_descriptors(text):
                .replace("]", " ")  \
                .replace(",", " ")  \
                .replace("-", " ")  \
-               .replace("'", " ")  \
-               .replace('"', " ")  \
+               .replace(""", " ")  \
+               .replace(""", " ")  \
                .replace(":", " ")  \
                .replace(";", " ")  \
                .replace("/", " ")  \

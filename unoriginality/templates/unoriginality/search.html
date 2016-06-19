@@ -1,21 +1,27 @@
 {% extends "unoriginality/header.html" %}
 
 {% block content %}
+    <hr>
 
-    <ul style="list-style-type:none">
+    <ul class = "rectangle-list">
     {% for repost in repost_candidates %}
         <li>
             <div class="row services">
 
                 <div class="col-md-2">
-                    <img src = "{{repost.thumbnail}}"/>
+                    {% if repost.thumbnail == "self" %}
+                        {% load staticfiles %}
+                        <img src = "{% static 'img/icons/thumbnail.png' %}"/>
+                    {% else %}
+                        <img src = "{{repost.thumbnail}}"/>
+                    {% endif %}
+
 				</div>
 
                 <div class="col-md-10">
                     <h5> {{repost.title}} </h5>
-                    <a style="font-size:100%;" class="light muted" href = {{repost.url}}> {{repost.url}} </a>
+                    <a style="font-size:100%;" class="light muted" href = {{repost.permalink}}> {{repost.permalink}} </a>
                     <p style="font-size:100%;" class="light muted"> Submitted by {{repost.author}} in r/{{repost.subreddit}} </p>
-
                 </div>
 
 			</div>
