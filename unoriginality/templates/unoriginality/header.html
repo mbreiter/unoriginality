@@ -58,18 +58,47 @@
 
         <form id="search-form" class="form-horizontal" method="get" action="/search/">
             <div class="form-group">
-                <div class="col-sm-11">
-                    <input type="text" class="form-control" id="subreddit" name="subreddit" placeholder="/r/"  value="">
-                </div>
 
-                <div class="col-sm-1">
-                    <img src="{% static 'img/icons/down.png' %}" data-toggle="collapse" data-target="#settings"></button>
+                <div class="row">
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" id="subreddit" name="subreddit" placeholder="/r/"  value="">
+                    </div>
+
+                    <div class="col-sm-1">
+                        <img src="{% static 'img/icons/down.png' %}" data-toggle="collapse" data-target="#settings"></button>
+                    </div>
                 </div>
             </div>
         </form>
 
         <div id="settings" class="collapse">
-            dream of californication.
+            <div class="row">
+                <label class="col-xs-1" for="curate">reference</label>
+                <input type="text" class="col-xs-2" value="all" id="curate">
+
+                <label class="col-xs-1"></label>
+
+                <label class="col-xs-1" for="category">refine</label>
+                <select name="category" class="col-xs-2" id="category">
+                  <option value="hot">hot</option>
+                  <option value="new">new</option>
+                  <option value="controversial">controversial</option>
+                  <option value="top">top</option>
+                </select>
+
+                <label class="col-xs-1"></label>
+
+                <label class="col-xs-1" for="age">from</label>
+                <select name="age" class="col-xs-2" id="age">
+                  <option value="past-hour">past hour</option>
+                  <option value="past_week">past week</option>
+                  <option value="past_month">past month</option>
+                  <option value="past_year">past year</option>
+                </select>
+
+                <label class="col-xs-1"></label>
+
+            </div>
         </div>
 
         {% block content %}

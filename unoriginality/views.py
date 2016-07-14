@@ -27,36 +27,21 @@ def search(request):
 
     return render(request, "unoriginality/search.html", serve)
 
+
+
 def index(request):
     r = praw.Reddit("unorginaility development -- top -- v1.01")
 
-    if request.session.get("last_visit"):
-        last_visit_time = request.session.get("last_visit")
-        visits = request.session.get("visits", 0)
+    top_submissions = r.get_subreddit("all").get_hot(limit=100)
+    reference_titles = ""
 
-        if (datetime.now() - datetime.strptime(last_visit_time[:-7], "%Y-%m-%d %H:%M:%S")) > timedelta( 0, 10 * 60, 0):
-            del request.session["reference"]
+    for submission in top_submissions:
+        reference_titles += submission.title.encode("ascii", "ignore") + "|"
 
-            request.session["visits"] = visits + 1
-            request.session["last_visit"] = str(datetime.now())
-    else:
-        request.session["last_visit"] = str(datetime.now())
-        request.session["visits"] = 1
+    reference = prepare_semantic_descriptors(reference_titles)
+    request.session["reference"] = reference
 
-    if request.session.get("reference"):
-        print("NOT LOADING")
-        return render(request, "unoriginality/header.html")
-    else:
-        top_submissions = r.get_subreddit("all").get_hot(limit=100)
-        reference_titles = ""
-
-        for submission in top_submissions:
-            reference_titles += submission.title.encode("ascii", "ignore") + "|"
-
-        reference = prepare_semantic_descriptors(reference_titles)
-        request.session["reference"] = reference
-
-        return render(request, "unoriginality/header.html")
+    return render(request, "unoriginality/header.html")
 
 def norm(post):
     sum_of_squares = 0
