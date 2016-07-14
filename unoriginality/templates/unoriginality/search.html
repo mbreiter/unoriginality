@@ -1,4 +1,5 @@
 {% extends "unoriginality/header.html" %}
+{% load staticfiles %}
 
 {% block content %}
     <hr>
@@ -12,11 +13,10 @@
             <div class="row services">
 
                 <div class="col-md-2">
-                    {% if repost.thumbnail == "self" %}
-                        {% load staticfiles %}
-                        <img src = "{% static 'img/icons/thumbnail.png' %}"/>
+                    {% if repost.thumbnail %}
+                        <a href="{{repost.url}}"> <img src = "{{repost.thumbnail}}"/> </a>
                     {% else %}
-                        <img src = "{{repost.thumbnail}}"/>
+                        <img src = "{% static 'img/icons/thumbnail.png' %}"/>
                     {% endif %}
 
 				</div>

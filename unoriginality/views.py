@@ -30,6 +30,9 @@ def search(request):
 
 
 def index(request):
+    return render(request, "unoriginality/header.html")
+
+def reference(request):
     r = praw.Reddit("unorginaility development -- top -- v1.01")
 
     top_submissions = r.get_subreddit("all").get_hot(limit=100)
@@ -40,8 +43,6 @@ def index(request):
 
     reference = prepare_semantic_descriptors(reference_titles)
     request.session["reference"] = reference
-
-    return render(request, "unoriginality/header.html")
 
 def norm(post):
     sum_of_squares = 0
