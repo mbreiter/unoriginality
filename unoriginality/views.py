@@ -23,7 +23,9 @@ def search(request):
         score = similarity_score(repost_descriptor, request.session["reference"])
         repost_candidates[submission] = score
 
-    return render(request, "unoriginality/search.html", {"repost_candidates" : repost_candidates})
+    serve = {"repost_candidates" : repost_candidates, "subreddit": subreddit}
+
+    return render(request, "unoriginality/search.html", serve)
 
 def index(request):
     r = praw.Reddit("unorginaility development -- top -- v1.01")
@@ -43,7 +45,7 @@ def index(request):
 
     if request.session.get("reference"):
         print("NOT LOADING")
-        return render(request, "unoriginality/home.html")
+        return render(request, "unoriginality/header.html")
     else:
         top_submissions = r.get_subreddit("all").get_hot(limit=100)
         reference_titles = ""
@@ -54,7 +56,7 @@ def index(request):
         reference = prepare_semantic_descriptors(reference_titles)
         request.session["reference"] = reference
 
-        return render(request, "unoriginality/home.html")
+        return render(request, "unoriginality/header.html")
 
 def norm(post):
     sum_of_squares = 0

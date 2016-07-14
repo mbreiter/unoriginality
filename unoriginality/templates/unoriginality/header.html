@@ -56,6 +56,22 @@
             <h5 class="light muted">a <strike>reposting</strike> recycling engine for reddit</h5>
         </div>
 
+        <form id="search-form" class="form-horizontal" method="get" action="/search/">
+            <div class="form-group">
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="subreddit" name="subreddit" placeholder="/r/"  value="">
+                </div>
+
+                <div class="col-sm-1">
+                    <img src="{% static 'img/icons/down.png' %}" data-toggle="collapse" data-target="#settings"></button>
+                </div>
+            </div>
+        </form>
+
+        <div id="settings" class="collapse">
+            dream of californication.
+        </div>
+
         {% block content %}
         {% endblock %}
     </div>
