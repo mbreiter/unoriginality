@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from collections import OrderedDict
 
 from datetime import datetime, timedelta
 import praw
 import math
 
 def search(request):
-    r = praw.Reddit("unorginaility development -- candidates -- v1.01")
+    r = praw.Reddit("unorginaility development -- candidates -- v1.10")
     subreddit = request.GET["subreddit"]
+
+    reference(request)
 
     try:
         reposts = r.get_subreddit(subreddit, fetch = True).get_rising(limit=1000)
@@ -23,19 +26,35 @@ def search(request):
         score = similarity_score(repost_descriptor, request.session["reference"])
         repost_candidates[submission] = score
 
+    repost_candidates = OrderedDict(sorted(repost_candidates.items(), reverse=True))
+
     serve = {"repost_candidates" : repost_candidates, "subreddit": subreddit}
 
     return render(request, "unoriginality/search.html", serve)
 
-
-
 def index(request):
+    reference(request)
     return render(request, "unoriginality/header.html")
 
 def reference(request):
-    r = praw.Reddit("unorginaility development -- top -- v1.01")
+    r = praw.Reddit("unorginaility development -- refernce -- v1.10")
 
-    top_submissions = r.get_subreddit("all").get_hot(limit=100)
+    try:
+        top_submissions = r.get_subreddit(request.GET["curate"], fetch = True)
+    except:
+        top_submissions = r.get_subreddit("all")
+
+    if request.GET.get("category", None) == "top":
+        top_submissions = top_submissions.get_top_from_year(limit = 100)
+    elif request.GET.get("category", None) == "controversial":
+        top_submissions = top_submissions.get_controversial_form_year(limit = 100)
+    elif request.GET.get("category", None) == "new":
+        top_submissions = top_submissions.get_new(limit = 100)
+    elif request.GET.get("category", None) == "hot":
+        top_submissions = top_submissions.get_hot(limit = 100)
+    else:
+        top_submissions = top_submissions.get_rising(limit = 100)
+
     reference_titles = ""
 
     for submission in top_submissions:
