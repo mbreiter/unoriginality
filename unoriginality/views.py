@@ -24,7 +24,9 @@ def search(request):
         repost_descriptor = prepare_semantic_descriptors(reposts)
 
         score = similarity_score(repost_descriptor, request.session["reference"])
-        repost_candidates[submission] = score
+
+        if score != 0:
+            repost_candidates[submission] = score
 
     repost_candidates = OrderedDict(sorted(repost_candidates.items(), reverse=True))
 
