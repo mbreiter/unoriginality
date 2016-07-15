@@ -911,6 +911,29 @@ footer .social-footer li:hover a {
 	box-shadow: 0;
 }
 
+.form-control-small {
+	font-size: 14px;
+	position: relative;
+	left: 0;
+	height: auto;
+	padding: 10px 20px;
+	border: 0px;
+	border-radius: 0;
+	box-shadow: 0;
+}
+
+.form-select {
+    background: transparent;
+    font-size: 14px;
+	position: relative;
+	left: 0;
+	height: auto;
+	padding: 10px 20px;
+	border: 1px;
+	border-radius: 0;
+	box-shadow: 0;
+}
+
 .form-control.form-white {
 	color: #fff;
 	border: 2px solid white;

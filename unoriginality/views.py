@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from collections import OrderedDict
-
 from datetime import datetime, timedelta
+
 import praw
 import math
 
@@ -137,6 +137,3 @@ def prepare_semantic_descriptors(text):
         build_posts.append(words)
 
     return build_semantic_descriptors(build_posts)
-
-def parse_post(id, author, name, permalink, title, url, score):
-    print(id)

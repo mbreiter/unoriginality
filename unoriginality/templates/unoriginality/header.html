@@ -74,13 +74,14 @@
                 <div class="row">
                     <div class="col-xs-4">
                         <label for="curate">reference</label>
-                        <img src="{% static 'img/icons/info.png' %}" title="choose a subreddit that you want candidate reposts to be similar to"/>
-                        <input type="text" value="all" name="curate" id="curate">
+                        <img src="{% static 'img/icons/info.png' %}" title="choosing a base subreddit will make recommendations similar"/>
+                        <input class="form-control-small" type="text" value="all" name="curate" id="curate">
                     </div>
 
                     <div class="col-xs-4">
                         <label for="category">refine</label>
-                        <select name="category" id="category">
+
+                        <select name="category" id="category" class="form-select">
                             <option value="top">top</option>
                             <option value="controversial">controversial</option>
                             <option value="rising">rising</option>
@@ -90,16 +91,11 @@
                     </div>
 
                     <div class="col-xs-4">
-                        
+                        <input type="submit" style="visibility: hidden;" />
                     </div>
-
-                    <input type="submit" style="visibility: hidden;" />
-
                 </div>
             </div>
-
         </form>
-
 
         {% block content %}
         {% endblock %}
