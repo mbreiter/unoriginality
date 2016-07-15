@@ -15,7 +15,7 @@ def search(request):
     try:
         reposts = r.get_subreddit(subreddit, fetch = True).get_rising(limit=1000)
     except:
-        return HttpResponse("bruh")
+        reposts = r.get_subreddit(all).get_rising(limit=1000)
 
     repost_candidates = {}
 
@@ -44,10 +44,10 @@ def reference(request):
     except:
         top_submissions = r.get_subreddit("all")
 
-    if request.GET.get("category", None) == "top":
+    if request.GET.get("age", None) == "top":
         top_submissions = top_submissions.get_top_from_year(limit = 100)
     elif request.GET.get("category", None) == "controversial":
-        top_submissions = top_submissions.get_controversial_form_year(limit = 100)
+        top_submissions = top_submissions.get_controversial_from_year(limit = 100)
     elif request.GET.get("category", None) == "new":
         top_submissions = top_submissions.get_new(limit = 100)
     elif request.GET.get("category", None) == "hot":
