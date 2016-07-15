@@ -4,10 +4,20 @@
 {% block content %}
     <hr>
 
+    <div class="row services">
+        {% if repost_candidates|length == 0 %}
+            <div class="col-md-12">
+                <p style="font-size:100%;" class="light muted"> couldn't find any posts, try changing the reference subreddit </p>
+            </div>
+        {% elif repost_candidates|length < 6 %}
+            <div class="col-md-12">
+                <p style="font-size:100%;" class="light muted"> choose from up to {{ repost_candidates|length }} posts (try changing the reference subreddit for more results)</p>
+            </div>
+        {% else %}
+            <p style="font-size:100%;" class="light muted"> choose from up to {{ repost_candidates|length }} posts </p>
+        {% endif %}
+    </div>
     <ul class = "rectangle-list">
-
-    <p style="font-size:100%;" class="light muted"> choose from up to {{ repost_candidates|length }} posts </p>
-
     {% for repost in repost_candidates %}
         <li>
             <div class="row services">

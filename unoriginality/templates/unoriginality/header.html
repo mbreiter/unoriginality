@@ -41,6 +41,7 @@
     <link rel="icon" type="image/png" href="{% static '/favicon-96x96.png' % }" sizes="96x96">
     <link rel="icon" type="image/png" href="{% static '/favicon-16x16.png' % }" sizes="16x16">
     <link rel="manifest" href="{% static '/manifest.json' % }">
+    <link rel="shortcut icon" href="{% static 'img/favicons/favicon.ico' % }" type="image/x-icon"/>
     <link rel="mask-icon" href="{% static '/safari-pinned-tab.svg' % }" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
@@ -64,8 +65,19 @@
                 </div>
 
                 <div class="col-sm-1">
-                    <img src="{% static 'img/icons/down.png' %}" data-toggle="collapse" data-target="#settings"></button>
+                    <img id="reveal" src="{% static 'img/icons/down.png' %}" onclick="pictureChange()" data-toggle="collapse" data-target="#settings">
                 </div>
+
+                <script>
+                    function pictureChange() {
+                        var image = document.getElementById('reveal');
+                        if (image.src.match("{% static 'img/icons/down.png' %}")) {
+                            image.src = "{% static 'img/icons/up.png' %}";
+                        } else {
+                            image.src = "{% static 'img/icons/down.png' %}";
+                        }
+                    }
+                </script>
 
                 <input type="submit" style="visibility: hidden;" />
             </div>
