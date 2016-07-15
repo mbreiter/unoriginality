@@ -72,23 +72,27 @@
 
             <div id="settings" class="collapse">
                 <div class="row">
-                    <label class="col-xs-1" for="curate">reference</label>
-                    <input type="text" class="col-xs-2" value="all" name="curate" id="curate">
+                    <div class="col-xs-4">
+                        <label for="curate">reference</label>
+                        <img src="{% static 'img/icons/info.png' %}" title="choose a subreddit that you want candidate reposts to be similar to"/>
+                        <input type="text" value="all" name="curate" id="curate">
+                    </div>
 
-                    <label class="col-xs-1"></label>
+                    <div class="col-xs-4">
+                        <label for="category">refine</label>
+                        <select name="category" id="category">
+                            <option value="top">top</option>
+                            <option value="controversial">controversial</option>
+                            <option value="rising">rising</option>
+                            <option value="new">new</option>
+                            <option value="hot">hot</option>
+                        </select>
+                    </div>
 
-                    <label class="col-xs-1" for="category">refine</label>
-                    <select name="category" class="col-xs-2" id="category">
-                        <option value="top">top</option>
-                        <option value="controversial">controversial</option>
-                        <option value="rising">rising</option>
-                        <option value="new">new</option>
-                        <option value="hot">hot</option>
-                    </select>
+                    <div class="col-xs-4">
+                        
+                    </div>
 
-                    <label class="col-xs-1"></label>
-
-                    <label class="col-xs-4"></label>
                     <input type="submit" style="visibility: hidden;" />
 
                 </div>
