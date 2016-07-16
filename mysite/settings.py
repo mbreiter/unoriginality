@@ -15,17 +15,16 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n&83e2@v1yzflq5s*aqfr9j1qk3efk380*xams_lj)fy=rqa&6'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'n&83e2@v1yzflq5s*aqfr9j1qk3efk380*xams_lj)fy=rqa&6'
 
 # Application definition
 
@@ -38,6 +37,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+ADMINS = (
+    ('Matthew Reiter', 'mail@matthewreiter.me'),
+)
+
+MANAGERS = (
+    ('Matthew Reiter', 'mail@matthewreiter.me'),
+)
+
+server {
+    listen 80 default_server;
+    return 444;
+}
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -68,8 +80,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mysite.wsgi.application'
+TEMPLATE_DEBUG = False
 
+WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -106,7 +119,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -127,3 +139,17 @@ STATIC_URL = '/static/'
 
 # Close the session when user closes the browser
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+SEND_BROKEN_LINK_EMAILS = True
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+SECURE_BROWSER_XSS_FILTER = True
+
+SECURE_SSL_REDIRECT = True
+
+SESSION_COOKIE_SECURE = True
+
+CSRF_COOKIE_SECURE = True
+
+CSRF_COOKIE_HTTPONLY = True
