@@ -22,10 +22,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['rollservice-rostov.ru']
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret.SECRET_KEY
+SECRET_KEY = secret.key
 
 # Application definition
 
@@ -136,7 +136,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_ROOT = '/home/django/django_project/unoriginality/static'
+STATIC_URL = '/static/
 
 # Close the session when user closes the browser
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
