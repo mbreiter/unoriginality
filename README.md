@@ -1,3 +1,3 @@
 # unoriginality
 
-![alt text](http://bit.ly/29YKaib "Project Include Logo")
+![alt text](http://i.imgur.com/zraucqo.png "Project Include Logo")
